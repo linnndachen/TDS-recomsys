@@ -1,0 +1,24 @@
+html{
+    background: url("gaelle-marcel-YnbJwNXy0YQ-unsplash.jpg");
+    background-size: cover;
+    height: 500px;
+    background-origin: border-box;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.container {
+    position: absolute;
+    text-align: center;
+    vertical-align: middle;
+    display: inline-block;
+    top: 50%;
+    width: 100%;
+}
+
+h1 {
+    color: black;
+    font-size: 60px;
+    opacity: 100%;
+}
