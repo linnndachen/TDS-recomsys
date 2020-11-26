@@ -58,11 +58,14 @@ def glove2vec(df, model):
         if n[0] is None:
             df = df.drop([i+1], axis=0)
 
+    df = df[['Names', 'description', 'vectors']]
+
     return df
 
 
 def save_model(model, model_filepath):
     pickle.dump(model, open(model_filepath, "wb"))
+
 
 def save_data(df, database_filename):
     engine = create_engine(
@@ -71,33 +74,40 @@ def save_data(df, database_filename):
 
 
 def main():
-    if len(sys.argv) == 3:
-        database_filepath, model_filepath = sys.argv[1:]
+    if len(sys.argv) == 4:
+        database_filepath, model_filepath, vecdata_filepath = sys.argv[1:]
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))
-        X, Y, category_names = load_data(database_filepath)
-        X_train, X_test, Y_train, Y_test = train_test_split(
-            X, Y, test_size=0.2)
+        df = load_data(database_filepath)
 
         print('Building model...')
-        model = build_model()
-
-        print('Training model...')
-        model.fit(X_train, Y_train)
-
-        print('Evaluating model...')
-        evaluate_model(model, X_test, Y_test, category_names)
+        model = glove_model(file_path='glove.twitter.27B.200d.txt')
 
         print('Saving model...\n    MODEL: {}'.format(model_filepath))
         save_model(model, model_filepath)
 
         print('Trained model saved!')
 
+        print('Vectorizing the EA description!')
+        df_vec = glove2vec(df, model)
+
+        print('Saving new df...\n    DATA: {}'.format(vecdata_filepath))
+        save_data(df_vec, vecdata_filepath)
+
+        print('Vecterized data saved to database!')
+
     else:
-        print('Please provide the filepath of the disaster messages database '
-              'as the first argument and the filepath of the pickle file to '
-              'save the model to as the second argument. \n\nExample: python '
-              'train_classifier.py ../data/DisasterResponse.db classifier.pkl')
+        print('Please provide the filepath of the EAdescription database '
+              'as the first argument. The filepath of the pickle file to '
+              'save the model the second argument and the filepath of '
+              'the database to save the vectorized description as the '
+              'third argument. \n\nExample: python3 glove_model.py '
+              '../data/EAdescription.db glove_model.pkl '
+              'vecDescription.db')
 
 
 if __name__ == '__main__':
     main()
+
+"""
+python3 glove_model.py ../data/EAdescription.db glove_model.pkl vecDescription.db
+"""

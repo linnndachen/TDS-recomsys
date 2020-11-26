@@ -6,8 +6,7 @@ import sqlite3
 from sqlalchemy import create_engine
 
 import re
-import nltk
-nltk.download('stopwords')
+from nltk.corpus import stopwords
 
 
 def load_data(data_filepath):
@@ -38,7 +37,6 @@ def clean_text(s):
 
 
 def clean_df(df):
-    df = df[['Names', 'Expertise', 'Title']]
     # combine the description
     df['description'] = df['Expertise'].fillna(
         '') + " " + df['Title'].fillna('')
@@ -71,13 +69,17 @@ def main():
         print('Cleaned data saved to database!')
 
     else:
-        print('Please provide the filepaths of the messages and categories '
-              'datasets as the first and second argument respectively, as '
-              'well as the filepath of the database to save the cleaned data '
-              'to as the third argument. \n\nExample: python process_data.py '
-              'disaster_messages.csv disaster_categories.csv '
-              'DisasterResponse.db')
+        print('Please provide the filepaths of the EA csv file '
+              'and the filepath of the database to save the cleaned data '
+              'to as the second argument. \n\nExample: python process_data.py '
+              'EA_CSV.csv '
+              'EAdescription.db')
 
 
 if __name__ == '__main__':
     main()
+
+
+"""
+python3 process_data.py EA_CSV.csv EAdescription.db
+"""
