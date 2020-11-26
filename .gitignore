@@ -1,2 +1,5 @@
-.DS_store
+*.DS_store
 glove.twitter.27B.200d.txt
+*__pycache__*
+*.db
+*.pkl
