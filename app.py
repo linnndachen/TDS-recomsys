@@ -17,16 +17,14 @@ import sqlite3
 import joblib
 
 
-def create_app(test_config=None)
+def create_app(test_config=None):
+    app = Flask(__name__)
+    # create and configure the app
+    app.secret_key = 'SECRET'
+    CORS(app, resources={"/": {"origins": "*"}})
 
-
-app = Flask(__name__)
-# create and configure the app
-app.secret_key = 'SECRET'
- CORS(app, resources={"/": {"origins": "*"}})
-
-  @app.after_request
-   def after_request(response):
+    @app.after_request
+    def after_request(response):
         response.headers.add('Access-Control-Allow-Headers',
                              'Content-Type, Authorization, true')
         response.headers.add('Access-Control-Allow-Methods',
@@ -73,14 +71,14 @@ app.secret_key = 'SECRET'
     model = joblib.load("models/glove_model.pkl")
 
     @app.route('/')
-    @app.route('/index')
+    @app.route('/index', methods=['GET'])
     def index():
         show_df = vec_df.loc[::, :'Title']
         return render_template('/index.html',  tables=[show_df.to_html()], titles=show_df.columns.values)
 
     # web page that handles user query and displays model results
 
-    @app.route('/result')
+    @app.route('/result', methods=['GET'])
     def go():
         # save user input in query
         query = request.args.get('query', '')
