@@ -37,6 +37,7 @@ def clean_text(s):
 
 
 def clean_df(df):
+    df.fillna('', inplace=True)
     # combine the description
     df['description'] = df['Expertise'].fillna(
         '') + " " + df['Title'].fillna('')
@@ -81,5 +82,6 @@ if __name__ == '__main__':
 
 
 """
+to run:
 python3 process_data.py EA_CSV.csv EAdescription.db
 """
