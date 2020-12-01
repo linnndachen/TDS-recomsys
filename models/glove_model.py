@@ -58,8 +58,6 @@ def glove2vec(df, model):
         if n[0] is None:
             df = df.drop([i+1], axis=0)
 
-    df = df[['Names', 'description', 'vectors']]
-
     return df
 
 
@@ -67,15 +65,13 @@ def save_model(model, model_filepath):
     pickle.dump(model, open(model_filepath, "wb"))
 
 
-def save_data(df, database_filename):
-    engine = create_engine(
-        'sqlite:///' + database_filename, pool_pre_ping=True)
-    df.to_sql('EAvectors', engine, index=False, if_exists='replace')
+def save_data(df):
+    df.to_pickle("./vectors.pkl")
 
 
 def main():
-    if len(sys.argv) == 4:
-        database_filepath, model_filepath, vecdata_filepath = sys.argv[1:]
+    if len(sys.argv) == 3:
+        database_filepath, model_filepath = sys.argv[1:]
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))
         df = load_data(database_filepath)
 
@@ -90,8 +86,8 @@ def main():
         print('Vectorizing the EA description!')
         df_vec = glove2vec(df, model)
 
-        print('Saving new df...\n    DATA: {}'.format(vecdata_filepath))
-        save_data(df_vec, vecdata_filepath)
+        print('Saving new df to pickel file...\n')
+        save_data(df_vec)
 
         print('Vecterized data saved to database!')
 
@@ -109,5 +105,5 @@ if __name__ == '__main__':
     main()
 
 """
-python3 glove_model.py ../data/EAdescription.db glove_model.pkl vecDescription.db
+python3 glove_model.py ../data/EAdescription.db glove_model.pkl
 """
