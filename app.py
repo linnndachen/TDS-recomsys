@@ -30,54 +30,88 @@ def after_request(response):
     return response
 
 
-def recomm_engine(input, df, model):
+def input_vec(input, model):
+    avgword2vec = None
+    count = 0
+    for word in input.split():
+        if word in model:
+            count += 1
+            if avgword2vec is None:
+                avgword2vec = model[word]
+            else:
+                avgword2vec = avgword2vec + model[word]
+
+    if avgword2vec is not None:
+        avgword2vec = avgword2vec / count
+
+    return avgword2vec
+
+
+def clean_text(s):
+    # removeNonAscii
+    s = "".join(i for i in s if ord(i) < 128)
+
+    # return all lower cases
+    s = s.lower()
+
+    # remove stop wrods
+    s = s.split()
+    stops = set(stopwords.words("english"))
+    text = [w for w in s if not w in stops]
+    text = " ".join(text)
+
+    # remove html
+    html_pattern = re.compile('<.*?>')
+    text = html_pattern.sub(r'', text)
+
+    # remove punctuation
+    text = re.sub(r'[^\w\s]', " ", text)
+    return text
+
+
+def recomm_engine(string, vec_df, model):
     # vectorize the input
-    vector_input = glove2vec(input, model)
+    cleaned_input = clean_text(string)
+    input_vector = input_vec(cleaned_input, model)
 
     # finding cosine similarity for the vectors
     similarity = []
-    for n in df['vectors']:
-        scores = cosine_similarity(vector_input, n)[0][0]
+    input_vector = input_vector.reshape(1, -1)
+    for n in vec_df['vectors']:
+        n = n.reshape(1, -1)
+        scores = cosine_similarity(input_vector, n)[0][0]
         similarity.append(scores)
 
-    df['similarity'] = similarity
+    vec_df['similarity'] = similarity
 
     # sort and find the recommended movie
-    df = df.sort_values(by=['similarity'], ascending=False)
-    #res_df = df.iloc[:m]
+    vec_df = vec_df.sort_values(by=['similarity'], ascending=False)
 
-    return df['Names']
+    return vec_df.loc[::, :'Title']
 
 
-con = sqlite3.connect("data/EAdescription.db")
-df = pd.read_sql_query("SELECT * FROM EAdescription", con)
-
-# load model
+vec_df = pd.read_pickle("models/vectors.pkl")
 model = joblib.load("models/glove_model.pkl")
 
 
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('/index.html',  tables=[df.to_html(classes='data')], titles=df.columns.values)
+    show_df = vec_df.loc[::, :'Title']
+    return render_template('/index.html',  tables=[show_df.to_html()], titles=show_df.columns.values)
 
 
 # web page that handles user query and displays model results
-@app.route('/reuslt')
+@app.route('/result')
 def go():
     # save user input in query
     query = request.args.get('query', '')
 
     # use model to predict classification for query
-    classification_labels = model.predict([query])[0]
-    classification_results = dict(zip(df.columns[4:], classification_labels))
+    recomm_orders = recomm_engine(query, vec_df, model)
 
     # This will render the go.html Please see that file.
-    return render_template(
-        '/result.html',
-        query=query,
-        classification_result=classification_results
-    )
+    return render_template('/index.html',  tables=[recomm_orders.to_html()], titles=recomm_orders.columns.values)
 
 
 def main():
