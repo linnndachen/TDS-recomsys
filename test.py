@@ -114,5 +114,3 @@ if __name__ == '__main__':
     main()
 
 # python3 test.py models/vectors.pkl models/glove_model.pkl
-
-#print(recomm_engine(keywords, vec_df, model))
