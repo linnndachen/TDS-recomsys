@@ -6,6 +6,7 @@ from nltk.corpus import stopwords
 from sklearn.metrics.pairwise import cosine_similarity
 
 from models.glove_model import glove2vec
+from data.process_data import clean_text
 
 from flask import Flask
 from flask_cors import CORS
@@ -15,21 +16,22 @@ from sqlalchemy import exc, create_engine
 import sqlite3
 import joblib
 
+
 def create_app(test_config=None)
-    app = Flask(__name__)
-    # create and configure the app
-    app.secret_key = 'SECRET'
-    CORS(app, resources={"/": {"origins": "*"}})
 
 
-    @app.after_request
-    def after_request(response):
+app = Flask(__name__)
+# create and configure the app
+app.secret_key = 'SECRET'
+ CORS(app, resources={"/": {"origins": "*"}})
+
+  @app.after_request
+   def after_request(response):
         response.headers.add('Access-Control-Allow-Headers',
-                            'Content-Type, Authorization, true')
+                             'Content-Type, Authorization, true')
         response.headers.add('Access-Control-Allow-Methods',
-                            'GET, PATCH, PUT, POST,DELETE, OPTIONS')
+                             'GET, PATCH, PUT, POST,DELETE, OPTIONS')
         return response
-
 
     def input_vec(input, model):
         avgword2vec = None
@@ -46,29 +48,6 @@ def create_app(test_config=None)
             avgword2vec = avgword2vec / count
 
         return avgword2vec
-
-
-    def clean_text(s):
-        # removeNonAscii
-        s = "".join(i for i in s if ord(i) < 128)
-
-        # return all lower cases
-        s = s.lower()
-
-        # remove stop wrods
-        s = s.split()
-        stops = set(stopwords.words("english"))
-        text = [w for w in s if not w in stops]
-        text = " ".join(text)
-
-        # remove html
-        html_pattern = re.compile('<.*?>')
-        text = html_pattern.sub(r'', text)
-
-        # remove punctuation
-        text = re.sub(r'[^\w\s]', " ", text)
-        return text
-
 
     def recomm_engine(string, vec_df, model):
         # vectorize the input
@@ -90,10 +69,8 @@ def create_app(test_config=None)
 
         return vec_df.loc[::, :'Title']
 
-
     vec_df = pd.read_pickle("models/vectors.pkl")
     model = joblib.load("models/glove_model.pkl")
-
 
     @app.route('/')
     @app.route('/index')
@@ -101,8 +78,8 @@ def create_app(test_config=None)
         show_df = vec_df.loc[::, :'Title']
         return render_template('/index.html',  tables=[show_df.to_html()], titles=show_df.columns.values)
 
-
     # web page that handles user query and displays model results
+
     @app.route('/result')
     def go():
         # save user input in query
@@ -113,7 +90,6 @@ def create_app(test_config=None)
 
         # This will render the go.html Please see that file.
         return render_template('/index.html',  tables=[recomm_orders.to_html()], titles=recomm_orders.columns.values)
-
 
     return app
 
