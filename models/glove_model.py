@@ -105,5 +105,6 @@ if __name__ == '__main__':
     main()
 
 """
+to run:
 python3 glove_model.py ../data/EAdescription.db glove_model.pkl
 """
