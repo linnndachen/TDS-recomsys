@@ -32,6 +32,7 @@ def create_app(test_config=None):
         return response
 
     def input_vec(input, model):
+        # turn input data into vectors
         avgword2vec = None
         count = 0
         for word in input.split():
@@ -62,7 +63,7 @@ def create_app(test_config=None):
 
         vec_df['similarity'] = similarity
 
-        # sort and find the recommended movie
+        # sort and rank the EAs by similarity
         vec_df = vec_df.sort_values(by=['similarity'], ascending=False)
 
         return vec_df.loc[::, :'Title']
@@ -76,18 +77,56 @@ def create_app(test_config=None):
         show_df = vec_df.loc[::, :'Title']
         return render_template('/index.html',  tables=[show_df.to_html()], titles=show_df.columns.values)
 
-    # web page that handles user query and displays model results
 
     @app.route('/result', methods=['GET'])
-    def go():
-        # save user input in query
-        query = request.args.get('query', '')
+    def search():
+        try: 
+            # save user input in query
+            query = request.args.get('query', '')
 
-        # use model to predict classification for query
-        recomm_orders = recomm_engine(query, vec_df, model)
+            if query == '':
+                abort(404)
 
-        # This will render the go.html Please see that file.
+            recomm_orders = recomm_engine(query, vec_df, model)
+        except:
+            abort(422)
+
         return render_template('/index.html',  tables=[recomm_orders.to_html()], titles=recomm_orders.columns.values)
+
+
+    #Error Handling
+    @app.errorhandler(400)
+    def bad_request(error):
+        return jsonify({
+            "success": False,
+            "error": 400,
+            "message": "Please check your input and try again."
+        }), 400
+
+    @app.errorhandler(404)
+    def resource_not_found(error):
+        return jsonify({
+            "success": False,
+            "error": 404,
+            "message": "Please type in some keywords or paragraphs."
+        }), 404
+
+    @app.errorhandler(422)
+    def unprocessable(error):
+        return jsonify({
+            "success": False,
+            "error": 422,
+            "message": "Please check your input and try again."
+        }), 422
+
+    @app.errorhandler(500)
+    def internal_server_error(error):
+        return jsonify({
+            "success": False,
+            "error": 500,
+            "message": "Opps, it's our problem. Please try again later"
+        }), 500
+
 
     return app
 
@@ -96,4 +135,6 @@ APP = create_app()
 
 
 if __name__ == '__main__':
-    APP.run(host='0.0.0.0', port=3000, debug=True)
+    APP.jinja_env.auto_reload = True
+    APP.config['TEMPLATES_AUTO_RELOAD'] = True
+    APP.run(debug=True, host='0.0.0.0', port=8080)
