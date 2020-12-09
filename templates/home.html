@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- meta -->
+        <meta charset="utf-8">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- /meta -->
+
+        <title>TDS EA Reviews</title>
+
+        <!-- styles -->
+        <link rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+            integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+            crossorigin="anonymous">
+        <link type="text/css" rel="stylesheet" href="/static/css/style.css">
+        <!-- /styles -->
+
+        <!-- favicons -->
+        <link rel="shortcut icon" href="{{ url_for('static',
+            filename='tds_icon.ico') }}">
+        <!-- /favicons -->
+
+        <!-- scripts -->
+        <script
+            src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+        <script type='text/javascript'>
+            window.onload = function() {
+              const thead = document.querySelectorAll('.table > thead');
+              thead.forEach(e => e.classList.add('thead-light'));
+            }
+        </script>
+        <!-- /scripts -->
+    </head>
+
+    <body>
+        <div class="container-fluid hello-header">
+            <br>
+            <div class="greetings">
+                <center>
+                    <h1 class="text-white">Hello Editors!</h1>
+                    <p class="text-white">Search for an EA to review the article</p>
+                </center>
+            </div>
+            <hr />
+
+            <div class="row justify-content-center">
+                <div class="col-lg-10 form-group-lg"> 
+                    <center>
+                        <form action="/result" method="get">
+                            <input type="text" class="form-control form-control-lg"
+                                name="query" placeholder="Enter keywords with space to search">
+                        <br>
+                        <button type="submit" class="btn btn-lg
+                            btn-success">Search</button>
+                    </center>
+                        <br>
+                        <br>
+                    </form>
+                </div>
+            </div>
+
+
+            {% block message %}
+            {% endblock %}
+            <br>
+        </div>
+
+        <div class="container col-lg-10 EA-table">
+            {% block content %}
+            <div class="page-header">
+                <br>
+                <h1 class="text-center">All EAs (Updated Nov.2020)</h1>
+            </div>
+            {% endblock %}
+            <div class="table-responsive">
+                <div class="table-sm table-bordered">
+                    {% for table in tables %}
+                        {{titles[loop.index]}}
+                        {{ table|safe }}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </body>
+    <br>
+    <br>
+    <div class="container footer-bottom">
+        <p class="m-0 text-center"> <a>© </a>
+            <script>document.write(new Date().getFullYear())</script>
+        </p>
+    </div>
+</html>
