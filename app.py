@@ -8,6 +8,8 @@ from sklearn.metrics.pairwise import cosine_similarity
 from models.glove_model import glove2vec
 from data.process_data import clean_text
 
+#from auth.auth import AuthError, requires_auth, requires_signed_in
+
 from flask import Flask
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
@@ -72,15 +74,16 @@ def create_app(test_config=None):
     model = joblib.load("models/glove_model.pkl")
 
     @app.route('/')
-    @app.route('/index', methods=['GET'])
-    def index():
+    @app.route('/home', methods=['GET'])
+    # @requires_auth('get:ea-details')
+    def home():
         show_df = vec_df.loc[::, :'Title']
-        return render_template('/index.html',  tables=[show_df.to_html()], titles=show_df.columns.values)
-
+        return render_template('/home.html', tables=[show_df.to_html(classes='table table-hover')], titles=show_df.columns.values)
 
     @app.route('/result', methods=['GET'])
+    # @requires_auth('get:ea-details')
     def search():
-        try: 
+        try:
             # save user input in query
             query = request.args.get('query', '')
 
@@ -91,10 +94,11 @@ def create_app(test_config=None):
         except:
             abort(422)
 
-        return render_template('/index.html',  tables=[recomm_orders.to_html()], titles=recomm_orders.columns.values)
+        return render_template('/result.html', query=query,
+                                tables=[recomm_orders.to_html(classes='table table-hover')], titles=recomm_orders.columns.values)
 
+    # Error Handling
 
-    #Error Handling
     @app.errorhandler(400)
     def bad_request(error):
         return jsonify({
@@ -127,6 +131,13 @@ def create_app(test_config=None):
             "message": "Opps, it's our problem. Please try again later"
         }), 500
 
+    """
+    @app.errorhandler(AuthError)
+    def handle_auth_error(ex):
+        response = jsonify(ex.error)
+        response.status_code = ex.status_code
+        return response
+    """
 
     return app
 
@@ -135,6 +146,4 @@ APP = create_app()
 
 
 if __name__ == '__main__':
-    APP.jinja_env.auto_reload = True
-    APP.config['TEMPLATES_AUTO_RELOAD'] = True
-    APP.run(debug=True, host='0.0.0.0', port=8080)
+    APP.run(host='0.0.0.0', port=8080, debug=True)
