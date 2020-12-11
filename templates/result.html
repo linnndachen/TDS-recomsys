@@ -1,22 +1,26 @@
-{% extends "index.html" %}
+{% extends "home.html" %}
 {% block title %}Results{% endblock %}
 
 {% block message %}
     <hr />
-    <h4 class="text-center">Input</h4>
-    <p class="text-center"><i>{{query}}</i></p>
+    <h4 class="text-center text-white">Searched For:</h4>
+    <p class="text-center text-white"><i>{{query}}</i></p>
 {% endblock %}
 
 
 <div class="container">
     {% block content %}
         <div class="page-header">
+            <br>
             <h1 class="text-center">Recommended</h1>
         </div>
     {% endblock %}
-
-    {% for table in tables %}
-            {{titles[loop.index]}}
-            {{ table|safe }}
-    {% endfor %}
+    <div class="table-responsive">
+        <div class="table-sm">
+            {% for table in tables %}
+                {{titles[loop.index]}}
+                {{ table|safe }}
+            {% endfor %}
+        </div>
+    </div>
 </div>

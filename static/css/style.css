@@ -1,4 +1,16 @@
 
 .hello-header{
-    background-color: #004a87;
+    background-color: #285477;
+    color: white
+}
+
+.footer-bottom{
+    text-align: center;
+    background-color:#285477;
+    width: 100%;
+    padding: 25px 25px;
+  }
+
+.Connect th {
+    width: 30%;
 }
