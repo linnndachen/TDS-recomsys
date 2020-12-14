@@ -1,1 +1,125 @@
 # TDS-recomsys
+
+## Project Description:
+
+
+## File structures
+
+```
+├── auth
+│   └── auth.py
+├── data
+│   ├── EA_CSV.csv
+│   └── process_data.py
+├── models
+│   ├── glove_model.pkl *** Stored with Git LFS
+│   ├── glove_model.py
+│   └── vectors.pkl
+├── static
+│   ├── css 
+│   ├── fonts
+│   ├── tds_icon.ico
+│   ├── img
+│   └── js
+└── templates
+│   ├── home.html
+│   └── result.html
+├── Procfile
+├── README.md
+├── app.py
+├── nltk.txt
+├── recomm_local.ipynb
+├── requirements.txt *** The dependencies we need to install with
+ "pip3 install -r requirements.txt"
+└── test.py
+```
+
+Files Highlight:
+
+- ```data/``` contains the raw data in csv format and the code to clean code the data
+
+- ```models/glove_model.pkl``` is the pre-trained word vectors by using [GloVe Twitter data](https://nlp.stanford.edu/projects/glove/). This file is stored in Git Large File. However, it is not necessary to download. For details, see Get Started Instructions below.
+
+- ```models/glove_model.py``` has the code to produce the pre-trained word vectors and to turn wrods into vectos. 
+
+
+- The web frontend is located in ```templates/```, which builds static assets deployed to the web server at ```static/```.
+
+
+- ```recomm_local.ipynb```is the juypter notebook to make sure all the codes work.
+
+
+- Procfile and nltk.txt are files for Heroku deployment
+
+
+## Getting Started
+
+### Installing Dependencies
+
+#### Python 3.7 and Flask
+
+Follow instructions to install the latest version of [Python](https://docs.python.org/3/using/) and [Flask](https://flask.palletsprojects.com/en/1.0.x/installation/#install-flask) for your platform.
+
+#### Virtual Enviornment
+
+We recommend working within a virtual environment whenever using Python for projects. This keeps your dependencies for each project separate and organaized. Instructions for setting up a virual enviornment for your platform can be found in the [python docs](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)
+
+Initialize and activate a virtualenv:
+
+```
+$ cd YOUR_PROJECT_DIRECTORY_PATH/
+$ virtualenv --no-site-packages env
+$ source env/bin/activate
+```
+
+#### PIP Dependencies
+Once you have your virtual environment setup and running, install dependencies by
+
+```pip install -r requirements.txt```
+
+This will install all of the required packages we selected within the requirements.txt file.
+
+### Start without downloading *.pkl files
+
+1. Process Data
+
+```
+$ cd YOUR_PROJECT_DIRECTORY_PATH/data
+python3 process_data.py EA_CSV.csv EAdescription.db
+```
+
+2. go to https://nlp.stanford.edu/projects/glove/ and download the ```glove.twitter.27B.zip```. Upzip the file and save it to YOUR_PROJECT_DIRECTORY_PATH/models
+
+3. Train the model
+
+```
+$ cd YOUR_PROJECT_DIRECTORY_PATH/models
+python3 glove_model.py ../data/EAdescription.db glove_model.pkl
+```
+
+This step might take about 10 mins
+
+4. Run the development server
+
+```
+$ export FLASK_APP=myapp
+$ export FLASK_ENV=development # enables debug mode
+$ python3 app.py
+```
+
+5. Navigate to Home page http://localhost:5000
+
+### Start with *.pkl files downloaded
+
+```
+$ cd YOUR_PROJECT_DIRECTORY_PATH
+$ export FLASK_APP=myapp
+$ export FLASK_ENV=development # enables debug mode
+$ python3 app.py
+```
+
+Navigate to Home page http://localhost:5000
+
+## Results
+
+## Acknowledgement
