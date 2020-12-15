@@ -118,21 +118,21 @@ $ export FLASK_ENV=development
 $ python3 app.py
 ```
 
-Navigate to Home page http://localhost:5000
+Navigate to Home page http://0.0.0.0:8080/
 
 ## Results
 
 Before, the editors need to go through an excel sheet like below to find the most suited EA
 
-![](static/image/before.png)
+![](static/img/results/before.png)
 
 Now, they can go to a web page like below and type in the keywords with space.
 
-![](static/image/result_1.png)
+![](static/img/results/result_1.png)
 
 For example, if we type in keywords "data ethics". The web page will render what we searched for and the first EA is the one that's most recommended.
 
-![](static/image/result_2.png)
+![](static/img/results/result_2.png)
 
 
 ## Author and Acknowledgement
