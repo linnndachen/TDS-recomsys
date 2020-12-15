@@ -126,9 +126,11 @@ Before, the editors need to go through an excel sheet like below to find the mos
 
 ![](static/img/results/before.png)
 
+
 Now, they can go to a web page like below and type in the keywords with space.
 
 ![](static/img/results/result_1.png)
+
 
 For example, if we type in keywords "data ethics". The web page will render what we searched for and the first EA is the one that's most recommended.
 
