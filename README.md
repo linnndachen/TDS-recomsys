@@ -2,8 +2,9 @@
 
 ## Project Description:
 
+This project aims to optimize the process for editors of tds to find the most suited editorial associates in the shortest period of time. Thus, a NLP recommendation engine was built. Editors type in the keywords of an article. The web app will rank all the editorial associates by their relevancy to the keywords that editors provided.
 
-## File structures
+## File Structures
 
 ```
 ├── auth
@@ -29,8 +30,7 @@
 ├── app.py
 ├── nltk.txt
 ├── recomm_local.ipynb
-├── requirements.txt *** The dependencies we need to install with
- "pip3 install -r requirements.txt"
+├── requirements.txt
 └── test.py
 ```
 
@@ -49,7 +49,7 @@ Files Highlight:
 - ```recomm_local.ipynb```is the juypter notebook to make sure all the codes work.
 
 
-- Procfile and nltk.txt are files for Heroku deployment
+- ```Procfile``` and ```nltk.txt``` are files for Heroku deployment
 
 
 ## Getting Started
@@ -85,7 +85,7 @@ This will install all of the required packages we selected within the requiremen
 
 ```
 $ cd YOUR_PROJECT_DIRECTORY_PATH/data
-python3 process_data.py EA_CSV.csv EAdescription.db
+$ python3 process_data.py EA_CSV.csv EAdescription.db
 ```
 
 2. go to https://nlp.stanford.edu/projects/glove/ and download the ```glove.twitter.27B.zip```. Upzip the file and save it to YOUR_PROJECT_DIRECTORY_PATH/models
@@ -94,7 +94,7 @@ python3 process_data.py EA_CSV.csv EAdescription.db
 
 ```
 $ cd YOUR_PROJECT_DIRECTORY_PATH/models
-python3 glove_model.py ../data/EAdescription.db glove_model.pkl
+$ python3 glove_model.py ../data/EAdescription.db glove_model.pkl
 ```
 
 This step might take about 10 mins
@@ -107,14 +107,14 @@ $ export FLASK_ENV=development # enables debug mode
 $ python3 app.py
 ```
 
-5. Navigate to Home page http://localhost:5000
+5. Navigate to Home page http://0.0.0.0:8080/
 
 ### Start with *.pkl files downloaded
 
 ```
 $ cd YOUR_PROJECT_DIRECTORY_PATH
 $ export FLASK_APP=myapp
-$ export FLASK_ENV=development # enables debug mode
+$ export FLASK_ENV=development
 $ python3 app.py
 ```
 
@@ -122,4 +122,19 @@ Navigate to Home page http://localhost:5000
 
 ## Results
 
-## Acknowledgement
+Before, the editors need to go through an excel sheet like below to find the most suited EA
+
+![](static/image/before.png)
+
+Now, they can go to a web page like below and type in the keywords with space.
+
+![](static/image/result_1.png)
+
+For example, if we type in keywords "data ethics". The web page will render what we searched for and the first EA is the one that's most recommended.
+
+![](static/image/result_2.png)
+
+
+## Author and Acknowledgement
+
+Linda Chen is the author of this project.
