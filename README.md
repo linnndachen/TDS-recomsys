@@ -2,7 +2,7 @@
 
 ## Project Description:
 
-This project aims to optimize the process for editors of tds to find the most suited editorial associates in the shortest period of time. Thus, a NLP recommendation engine was built. Editors type in the keywords of an article. The web app will rank all the editorial associates by their relevancy to the keywords that editors provided.
+This project aims to optimize the process for finding the most suited editorial associates in the shortest period of time. An NLP recommendation engine was thus built. After the editor type in the keywords of an article, the web app will rank all the editorial associates by their relevancy, comparing to the keywords that the editor provided. For more details, please see [this](https://medium.com/@linnndachen/finding-a-reviewer-d0fd1a1572c2) Medium blog post.
 
 ## File Structures
 
@@ -79,7 +79,7 @@ Once you have your virtual environment setup and running, install dependencies b
 
 This will install all of the required packages we selected within the requirements.txt file.
 
-### Start without downloading *.pkl files
+### Running without downloading *.pkl files
 
 1. Process Data
 
@@ -97,7 +97,7 @@ $ cd YOUR_PROJECT_DIRECTORY_PATH/models
 $ python3 glove_model.py ../data/EAdescription.db glove_model.pkl
 ```
 
-This step might take about 10 mins
+This step takes ~10 mins
 
 4. Run the development server
 
@@ -109,7 +109,7 @@ $ python3 app.py
 
 5. Navigate to Home page http://0.0.0.0:8080/
 
-### Start with *.pkl files downloaded
+### Running with *.pkl files downloaded
 
 ```
 $ cd YOUR_PROJECT_DIRECTORY_PATH
@@ -137,6 +137,10 @@ For example, if we type in keywords "data ethics". The web page will render what
 ![](static/img/results/result_2.png)
 
 
+For more details on model performance and future improvement, please read the Medium [blog post](https://medium.com/@linnndachen/finding-a-reviewer-d0fd1a1572c2). 
+
 ## Author and Acknowledgement
 
 Linda Chen is the author of this project.
+
+All rights reserved.
