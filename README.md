@@ -137,7 +137,7 @@ For example, if we type in keywords "data ethics". The web page will render what
 ![](static/img/results/result_2.png)
 
 
-For more details on model performance and future improvement, please read the Medium [blog post](https://medium.com/@linnndachen/finding-a-reviewer-d0fd1a1572c2). 
+For more details on model performance and future improvement, please read the Medium [blog post](https://linnndachen.medium.com/finding-a-reviewer-d0fd1a1572c2). 
 
 ## Author and Acknowledgement
 
