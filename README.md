@@ -10,12 +10,9 @@ This project aims to optimize the process for finding the most suited editorial 
 ├── auth
 │   └── auth.py
 ├── data
-│   ├── EA_CSV.csv
 │   └── process_data.py
 ├── models
-│   ├── glove_model.pkl *** Stored with Git LFS
-│   ├── glove_model.py
-│   └── vectors.pkl
+│   └── glove_model.py
 ├── static
 │   ├── css 
 │   ├── fonts
@@ -36,11 +33,9 @@ This project aims to optimize the process for finding the most suited editorial 
 
 Files Highlight:
 
-- ```data/``` contains the raw data in csv format and the code to clean code the data
+- ```data/process_data.py``` is the file to clean data.
 
-- ```models/glove_model.pkl``` is the pre-trained word vectors by using [GloVe Twitter data](https://nlp.stanford.edu/projects/glove/). This file is stored in Git Large File. However, it is not necessary to download. For details, see Get Started Instructions below.
-
-- ```models/glove_model.py``` has the code to produce the pre-trained word vectors and to turn wrods into vectos. 
+- ```models/glove_model.py``` is the file to produce the pre-trained word vectors and to turn wrods into vectos. 
 
 
 - The web frontend is located in ```templates/```, which builds static assets deployed to the web server at ```static/```.
@@ -79,18 +74,30 @@ Once you have your virtual environment setup and running, install dependencies b
 
 This will install all of the required packages we selected within the requirements.txt file.
 
-### Running without downloading *.pkl files
+### Get it running
 
-1. Process Data
+1. Download files and rename columns
+
+```
+- download the most updated EA file from Google drive in CSV format.
+
+- rename it to: EA_CSV.csv
+
+- rename "Current Title on LinkedIn" to "Title" and "Expertise(s)" to "Expertise"
+```
+
+If the column names have completed change by the time you are using this project. Please use the Jupyter notebook ```recomm_local.ipynb``` to play with it first.
+
+2. Process Data
 
 ```
 $ cd YOUR_PROJECT_DIRECTORY_PATH/data
 $ python3 process_data.py EA_CSV.csv EAdescription.db
 ```
 
-2. go to https://nlp.stanford.edu/projects/glove/ and download the ```glove.twitter.27B.zip```. Upzip the file and save it to YOUR_PROJECT_DIRECTORY_PATH/models
+3. go to https://nlp.stanford.edu/projects/glove/ and download the ```glove.twitter.27B.zip```. Upzip the file and save it to YOUR_PROJECT_DIRECTORY_PATH/models
 
-3. Train the model
+4. Train the model
 
 ```
 $ cd YOUR_PROJECT_DIRECTORY_PATH/models
@@ -99,7 +106,7 @@ $ python3 glove_model.py ../data/EAdescription.db glove_model.pkl
 
 This step takes ~10 mins
 
-4. Run the development server
+5. Run the development server
 
 ```
 $ export FLASK_APP=myapp
@@ -107,18 +114,9 @@ $ export FLASK_ENV=development # enables debug mode
 $ python3 app.py
 ```
 
-5. Navigate to Home page http://0.0.0.0:8080/
+6. Navigate to Home page http://0.0.0.0:8080/
 
-### Running with *.pkl files downloaded
-
-```
-$ cd YOUR_PROJECT_DIRECTORY_PATH
-$ export FLASK_APP=myapp
-$ export FLASK_ENV=development
-$ python3 app.py
-```
-
-Navigate to Home page http://0.0.0.0:8080/
+It takes ~5 min to get the web running.
 
 ## Results
 
