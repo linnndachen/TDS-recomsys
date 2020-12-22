@@ -2,4 +2,5 @@
 glove.twitter.27B.200d.txt
 *__pycache__*
 *.db
-EA_CSV.csv
+data/EA_CSV.csv
+__pycache__/
