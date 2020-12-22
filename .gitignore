@@ -5,3 +5,4 @@ glove.twitter.27B.200d.txt
 data/EA_CSV.csv
 *.pyc
 **/__pycache__
+*.pkl
